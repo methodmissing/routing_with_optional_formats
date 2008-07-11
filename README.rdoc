@@ -16,7 +16,7 @@ This becomes quite painful with large code bases with multiple namespaces where 
 
 Our per process on startup Memory use used to be 177M RES ( Solaris top output ) prior to injecting this plugin.  
 <pre><code>
-  PID USERNAME LWP PRI NICE  SIZE   RES STATE    TIME    CPU COMMAND
+PID   USERNAME LWP PRI NICE  SIZE  RES  STATE    TIME  CPU   COMMAND
 25895 mongrel    2   1    0  146M  136M sleep    0:48  0.07% mongrel_rails
 25898 mongrel    2   1    0  146M  135M sleep    0:47  0.06% mongrel_rails
 25887 mongrel    2   1    0  146M  136M sleep    0:47  0.06% mongrel_rails
