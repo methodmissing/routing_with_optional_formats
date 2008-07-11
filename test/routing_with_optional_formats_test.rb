@@ -1,5 +1,4 @@
 require 'init'
-
 require 'test/unit'
 
 ActionController::Routing::Routes.draw do |map|
@@ -19,8 +18,7 @@ class RoutingWithOptionalFormatsTest < Test::Unit::TestCase
       assert_named_route( "/articles.xml", :formatted_articles_path, { :format => :xml } )
     end
     assert_named_route( "/users", :users_path )
-    assert_named_route( "/users.xml", :formatted_users_path, { :format => :xml } )
-    
+    assert_named_route( "/users.xml", :formatted_users_path, { :format => :xml } )    
   end
   
   def assert_named_route(expected, route, options = {})
