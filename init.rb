@@ -1,1 +1,1 @@
-# Include hook code here
+require 'routing_with_optional_formats'
