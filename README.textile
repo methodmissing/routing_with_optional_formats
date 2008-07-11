@@ -2,13 +2,13 @@
 
 <h2>Why ?</h2>
 
-Each mapped resource spawns 14 named routes.
+Each mapped resource spawns 14 named routes, as well as corresponding entries in the routing table.
 
 * 7 default
 * 7 for formatted routes 
 * x 2 more for each custom collection or member definition
 
-You would typically only supported different content types over a select few resources.Having the various format friendly named routes generate is rather wasteful on Memory use. 
+You would typically only supported different content types over a select few resources.Having the various format friendly routes generate is rather wasteful on Memory use. 
 
 This becomes quite painful with large code bases with multiple namespaces where Routing overhead can be quite significant, both in Memory use and Recognition.
 
