@@ -46,7 +46,7 @@ My Functionals *appear* ( sorry, no scaling or performance can of worms here ) t
 <pre><code>
 map.resources :articles, :formatted => false do |article|
   article.resources :comments, :only => [:new, :create]
-  article.resources :photos, :only => [:index, :show]
+  article.resources :photos, :except => :destroy
 end
 </code></pre>
 
