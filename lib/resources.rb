@@ -14,7 +14,7 @@ ActionController::Resources::Resource.class_eval do
   end
   
   def actions
-    only() - except()
+    ( only + custom_actions ).uniq - except
   end
   
   def action?( action )
@@ -22,6 +22,14 @@ ActionController::Resources::Resource.class_eval do
   end
   
   private
+  
+  def custom_actions
+    returning([]) do |custom|
+      custom.concat @collection_methods.values
+      custom.concat @member_methods.values
+      custom.concat @new_methods.values
+    end.flatten    
+  end
   
   def default_actions
     [:index, :new, :create, :show, :edit, :update, :destroy]

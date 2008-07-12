@@ -4,8 +4,8 @@ require 'test/unit'
 ActionController::Routing::Routes.draw do |map|
   map.resources :articles, :formatted => false
   map.resources :users
-  map.resources :blogs, :only => :show
-  map.resources :photos, :except => :edit
+  map.resources :blogs, :collection => { :popular => :get }, :only => :show
+  map.resources :photos, :member => { :vote => :put }, :except => :edit
 end
 
 class RoutingWithOptionalFormatsTest < Test::Unit::TestCase
@@ -28,9 +28,11 @@ class RoutingWithOptionalFormatsTest < Test::Unit::TestCase
     assert_raise( NoMethodError ) do
       assert_named_route( "/blogs", :blogs_path )
     end
+    assert_named_route( "/blogs/popular", :popular_blogs_path )
+    assert_named_route("/photos/1/vote", :vote_photo_path, { :id => 1 })
     assert_named_route( "/photos", :photos_path )
     assert_raise( NoMethodError ) do
-      assert_named_route( "/photos/edit/1", :edit_photo_path, { :id => 1 } )
+      assert_named_route( "/photos/1/edit", :edit_photo_path, { :id => 1 } )
     end
   end
   
