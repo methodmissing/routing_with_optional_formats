@@ -25,7 +25,7 @@ ActionController::Routing::RouteSet.class_eval do
 
   def add_route(path, options = {})
     #puts "#{path} -> #{options.inspect}"
-    return unless installable?( path, 'format', options )
+    return unless installable?( path, options )
     route = builder.build(path, options.except(:formatted))
     @routes << route
     route
@@ -33,15 +33,15 @@ ActionController::Routing::RouteSet.class_eval do
 
   def add_named_route(name, path, options = {})
     # TODO - is options EVER used?
-    return unless installable?( name, 'formatted', options )
+    return unless installable?( path, options )
     name = options[:name_prefix] + name.to_s if options[:name_prefix]
     @named_routes[name.to_sym] = add_route(path, options)
   end
 
   private
   
-  def installable?( element, string, options )
-    options.except(:controller).empty? || ( element.include?( string ) && options[:formatted] == false ) ? false : true
+  def installable?( path, options )
+    options.except(:controller).empty? || ( path.include?( 'format' ) && options[:formatted] == false ) ? false : true
   end
 
 end
