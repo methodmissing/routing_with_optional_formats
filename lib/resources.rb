@@ -5,16 +5,29 @@ ActionController::Resources::Resource.class_eval do
   end  
   
   def only
-    _only = Array( @options[:only] )
-    _only.empty? ? default_actions() : _only
+    Array( @options[:only] )
+  end
+
+  def only?
+    !only.empty?
   end
   
   def except
     Array( @options[:except] )
   end
   
+  def except?
+    !except.empty?
+  end
+  
   def actions
-    ( only + custom_actions ).uniq - except
+    if only? 
+      only + sanitized_custom_actions
+    elsif except?
+      all_actions - except
+    else
+      all_actions
+    end
   end
   
   def action?( action )
@@ -31,8 +44,16 @@ ActionController::Resources::Resource.class_eval do
     end.flatten    
   end
   
+  def sanitized_custom_actions
+    custom_actions - [:edit, :new]
+  end
+  
   def default_actions
     [:index, :new, :create, :show, :edit, :update, :destroy]
+  end
+  
+  def all_actions
+    ( default_actions + sanitized_custom_actions ).uniq
   end
   
 end
