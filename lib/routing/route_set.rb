@@ -1,20 +1,47 @@
+=begin
 ActionController::Routing::RouteSet::Mapper.class_eval do
 
-=begin      
+#begin      
   def connect(path, options = {})
-    return unless route_supported?( path, 'format', options )
+    puts "#{path} -> #{options.inspect}"
+    #return unless route_supported?( path, 'format', options )
     @set.add_route(path, options.except(:formatted))
   end        
-=end
+#end
   def named_route(name, path, options = {}) #:nodoc:  
-    return unless route_supported?( name, 'formatted', options )
+    return unless installable?( name, 'formatted', options )
     @set.add_named_route(name, path, options.except(:formatted))
   end
   
   private
   
-  def route_supported?( element, string, options )
+  def installable?( element, string, options )
     options.except(:controller).empty? || ( element.include?( string ) && options[:formatted] == false ) ? false : true
   end
         
+end
+=end
+ActionController::Routing::RouteSet.class_eval do
+
+  def add_route(path, options = {})
+    #puts "#{path} -> #{options.inspect}"
+    return unless installable?( path, 'format', options )
+    route = builder.build(path, options.except(:formatted))
+    @routes << route
+    route
+  end
+
+  def add_named_route(name, path, options = {})
+    # TODO - is options EVER used?
+    return unless installable?( name, 'formatted', options )
+    name = options[:name_prefix] + name.to_s if options[:name_prefix]
+    @named_routes[name.to_sym] = add_route(path, options)
+  end
+
+  private
+  
+  def installable?( element, string, options )
+    options.except(:controller).empty? || ( element.include?( string ) && options[:formatted] == false ) ? false : true
+  end
+
 end
