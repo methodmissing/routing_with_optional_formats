@@ -1,11 +1,12 @@
 ActionController::Routing::RouteSet::Mapper.class_eval do
-        
+
+=begin      
   def connect(path, options = {})
     return unless route_supported?( path, 'format', options )
     @set.add_route(path, options.except(:formatted))
   end        
-        
-  def named_route(name, path, options = {}) #:nodoc:
+=end
+  def named_route(name, path, options = {}) #:nodoc:  
     return unless route_supported?( name, 'formatted', options )
     @set.add_named_route(name, path, options.except(:formatted))
   end
