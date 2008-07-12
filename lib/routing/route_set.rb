@@ -25,7 +25,7 @@ ActionController::Routing::RouteSet.class_eval do
 
   def add_route(path, options = {})
     #puts "#{path} -> #{options.inspect}"
-    return unless installable?( path, options )
+    #return unless installable?( path, options )
     route = builder.build(path, options.except(:formatted))
     @routes << route
     route

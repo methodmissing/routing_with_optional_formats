@@ -75,6 +75,7 @@ ActionController::Resources.module_eval do
   private
   
   def action_options_for_with_formatted( action, resource, method = nil )
+    #puts resource.actions.inspect
     return {} unless resource.action?( action.to_sym )
     returning( action_options_for_without_formatted( action, resource, method = nil ) ) do |action_options|
       action_options.merge!( :formatted => resource.formatted? )
