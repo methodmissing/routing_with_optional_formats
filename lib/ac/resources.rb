@@ -1,5 +1,9 @@
 ActionController::Resources::Resource.class_eval do
   
+  def controller_klass
+    @controller_klass ||= "#{controller}_controller".camelize.constantize
+  end
+  
   def formatted?
     options_with_default( :formatted )
   end  
@@ -24,6 +28,10 @@ ActionController::Resources::Resource.class_eval do
     !except.empty?
   end
   
+  def action?( action )
+    actions.include?( action )
+  end
+  
   def actions
     if only? 
       only + custom_actions
@@ -33,17 +41,11 @@ ActionController::Resources::Resource.class_eval do
       all_actions
     end
   end
-  
-  def action?( action )
-    actions.include?( action )
+
+  def controller_actions
+    controller_klass.actions
   end
-  
-  private
-  
-  def options_with_default( key )
-    @options.key?(key) ? @options[key] : true 
-  end
-  
+    
   def custom_actions
     returning([]) do |custom|
       custom.concat @collection_methods.values
@@ -60,6 +62,12 @@ ActionController::Resources::Resource.class_eval do
     ( default_actions + custom_actions ).uniq
   end
   
+  private
+  
+  def options_with_default( key )
+    @options.key?(key) ? @options[key] : true 
+  end
+    
 end
 
 ActionController::Resources.module_eval do
@@ -67,7 +75,6 @@ ActionController::Resources.module_eval do
   private
   
   def action_options_for_with_formatted( action, resource, method = nil )
-    puts resource.controller.classify.inspect
     return {} unless resource.action?( action.to_sym )
     returning( action_options_for_without_formatted( action, resource, method = nil ) ) do |action_options|
       action_options.merge!( :formatted => resource.formatted? )
