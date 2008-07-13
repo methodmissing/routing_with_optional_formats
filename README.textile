@@ -44,7 +44,7 @@ My Functionals *appear* ( sorry, no scaling or performance can of worms here ) t
 <h2>Where this is going ...</h2>
 
 <ul>
-  <li>Ability to infer, via each Resource definition, exactly which controller actions is defined by the Controller.</li>
+  <li>Ability to infer, via each Resource definition, exactly which actions is defined by the Controller.</li>
   <li>Catch UnknownAction errors via routes.rb</li>
   <li>Generating a less cluttered Routing table.</li> 	
 </ul>	
