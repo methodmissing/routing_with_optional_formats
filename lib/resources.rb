@@ -1,8 +1,12 @@
 ActionController::Resources::Resource.class_eval do
   
   def formatted?
-    @options.key?(:formatted) ? @options[:formatted] : true 
+    options_with_default( :formatted )
   end  
+  
+  def hashed?
+    options_with_default( :hashed )
+  end
   
   def only
     Array( @options[:only] )
@@ -22,7 +26,7 @@ ActionController::Resources::Resource.class_eval do
   
   def actions
     if only? 
-      only + sanitized_custom_actions
+      only + custom_actions
     elsif except?
       all_actions - except
     else
@@ -36,6 +40,10 @@ ActionController::Resources::Resource.class_eval do
   
   private
   
+  def options_with_default( key )
+    @options.key?(key) ? @options[key] : true 
+  end
+  
   def custom_actions
     returning([]) do |custom|
       custom.concat @collection_methods.values
@@ -44,16 +52,12 @@ ActionController::Resources::Resource.class_eval do
     end.flatten    
   end
   
-  def sanitized_custom_actions
-    custom_actions - [:edit, :new]
-  end
-  
   def default_actions
     [:index, :new, :create, :show, :edit, :update, :destroy]
   end
   
   def all_actions
-    ( default_actions + sanitized_custom_actions ).uniq
+    ( default_actions + custom_actions ).uniq
   end
   
 end
@@ -63,7 +67,6 @@ ActionController::Resources.module_eval do
   private
   
   def action_options_for_with_formatted( action, resource, method = nil )
-    #puts resource.actions.inspect
     return {} unless resource.action?( action.to_sym )
     returning( action_options_for_without_formatted( action, resource, method = nil ) ) do |action_options|
       action_options.merge!( :formatted => resource.formatted? )
