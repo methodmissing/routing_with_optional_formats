@@ -6,5 +6,6 @@ rescue LoadError
   %w(rubygems activesupport action_controller).each{|l| require l }
 end
 
-require 'resources'
-require 'routing/route_set'
+require 'ac/base'
+require 'ac/resources'
+require 'ac/routing/route_set'
