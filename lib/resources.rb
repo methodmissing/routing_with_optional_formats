@@ -1,7 +1,7 @@
 ActionController::Resources::Resource.class_eval do
   
   def formatted?
-    @options[:formatted]
+    @options.key?(:formatted) ? @options[:formatted] : true 
   end  
   
   def only
@@ -59,18 +59,6 @@ ActionController::Resources::Resource.class_eval do
 end
 
 ActionController::Resources.module_eval do
-
-  def resources(*entities, &block)
-    options = entities.extract_options!
-    options.reverse_merge!( :formatted => true, :only => [], :except => [] )
-    entities.each { |entity| map_resource(entity, options.dup, &block) }
-  end
-
-  def resource(*entities, &block)
-    options = entities.extract_options!
-    options.reverse_merge!( :formatted => true, :only => [], :except => [] )
-    entities.each { |entity| map_singleton_resource(entity, options.dup, &block) }
-  end
 
   private
   
