@@ -8,7 +8,7 @@ class ActionControllerDefinedActionsTest < Test::Unit::TestCase
   end
   
   def test_should_be_able_to_infer_all_defined_controller_actions
-    assert_equal @articles.actions,  [:index, :show]
+    assert_equal @articles.actions,  [:show, :index]
     assert_equal @blogs.actions, [:show, :popular]
   end
   
