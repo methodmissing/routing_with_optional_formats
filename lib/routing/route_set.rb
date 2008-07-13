@@ -1,7 +1,8 @@
 ActionController::Routing::RouteSet.class_eval do
 
   def add_route(path, options = {})
-    route = builder.build(path, options.except(:formatted))
+    options.delete(:formatted)
+    route = builder.build(path, options)
     @routes << route
     route
   end
