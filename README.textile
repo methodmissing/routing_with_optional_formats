@@ -49,12 +49,19 @@ My Functionals *appear* ( sorry, no scaling or performance can of worms here ) t
   <li>Generating a less cluttered Routing table.</li> 	
 </ul>	
 
+<h2>Configuration</h2>
+
+<pre><code>
+ActionController::Base.prune_routes is set to true for Production environment by default.
+For other environments, business as usual to avoid Reloading issues etc. 	
+</pre></code>
+
 <h2>Example</h2>
 
 <pre><code>
 map.resources :articles, :formatted => false do |article|
-  article.resources :comments, :only => [:new, :create]
-  article.resources :photos, :except => :destroy
+  article.resources :comments
+  article.resources :photos, :formatted => false
 end
 </code></pre>
 
