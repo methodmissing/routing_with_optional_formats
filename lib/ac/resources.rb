@@ -1,12 +1,6 @@
 ActionController::Resources::Resource.class_eval do
   
-  class << self
-    
-    def default_actions
-      Set.new( [:index, :new, :create, :show, :edit, :update, :destroy] )
-    end
-    
-  end
+  DEFAULT_ACTIONS =  [:index, :new, :create, :show, :edit, :update, :destroy].to_set
   
   def controller_klass
     return unless controller_klass?
@@ -35,11 +29,11 @@ ActionController::Resources::Resource.class_eval do
   end
         
   def default_actions
-    self.class.default_actions.union( custom_actions )
+    DEFAULT_ACTIONS.union( custom_actions )
   end
 
   def custom_actions
-    @custom_actions ||= Set.new( (@collection_methods.values + @member_methods.values + @new_methods.values ).flatten.uniq )
+    @custom_actions ||= custom_actions_from_ivars.flatten.uniq.to_set
   end
 
   def prune?
@@ -55,6 +49,10 @@ ActionController::Resources::Resource.class_eval do
   end  
   
   private
+  
+  def custom_actions_from_ivars
+    [@collection_methods, @member_methods, @new_methods].map{|i| i.values }
+  end
   
   def options_with_default( key )
     @options.key?(key) ? @options[key] : true 
