@@ -29,7 +29,7 @@ ActionController::Resources::Resource.class_eval do
   def controller_actions
     returning( controller_klass.actions ) do |ca|
       ca << :show unless ca.difference( MEMBER_ACTIONS ).empty?
-      ca << :index unless !singleton? && ca.difference( COLLECTION_ACTIONS ).empty?
+      ca << :index unless !uncountable? && ca.difference( COLLECTION_ACTIONS ).empty?
     end
   end
         
@@ -45,16 +45,12 @@ ActionController::Resources::Resource.class_eval do
     ActionController::Base.prune_routes    
   end
   
-  def singleton?
-    is_a?( ActionController::Resources::SingletonResource )
-  end
-  
   def action?( action )
     actions.include?( action )
   end
   
   def camelized_controller
-    @camelized_controller ||= "#{controller}_controller".camelize
+    @camelized_controller ||= "#{path}_controller".camelize
   end  
   
   private
