@@ -1,6 +1,7 @@
 ActionController::Routing::RouteSet.class_eval do
 
   def add_route(path, options = {})
+    return unless installable?( path, options )
     options.delete(:formatted)
     route = builder.build(path, options)
     @routes << route
