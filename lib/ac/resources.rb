@@ -30,6 +30,7 @@ ActionController::Resources::Resource.class_eval do
     returning( controller_klass.actions ) do |ca|
       ca << :show unless ca.difference( MEMBER_ACTIONS ).empty?
       ca << :index unless !uncountable? && ca.difference( COLLECTION_ACTIONS ).empty?
+      ca.delete(:index) if uncountable?
     end
   end
         
