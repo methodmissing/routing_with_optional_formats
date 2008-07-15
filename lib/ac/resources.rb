@@ -1,6 +1,7 @@
 ActionController::Resources::Resource.class_eval do
   
   DEFAULT_ACTIONS =  [:index, :new, :create, :show, :edit, :update, :destroy].to_set
+  DEFAULT_SINGLETON_ACTIONS = [:new, :create, :show, :edit, :update, :destroy].to_set
   COLLECTION_ACTIONS = [:index, :create].to_set
   MEMBER_ACTIONS = [:show, :update, :destroy].to_set  
   
@@ -29,13 +30,13 @@ ActionController::Resources::Resource.class_eval do
   def controller_actions
     returning( controller_klass.actions ) do |ca|
       ca << :show unless ca.difference( MEMBER_ACTIONS ).empty?
-      ca << :index unless !uncountable? && ca.difference( COLLECTION_ACTIONS ).empty?
-      ca.delete(:index) if uncountable?
+      ca << :index unless !singleton? && ca.difference( COLLECTION_ACTIONS ).empty?
+      ca.delete(:index) if singleton?
     end
   end
         
   def default_actions
-    DEFAULT_ACTIONS.union( custom_actions )
+    (singleton? ? DEFAULT_SINGLETON_ACTIONS : DEFAULT_ACTIONS ).union( custom_actions )
   end
 
   def custom_actions
@@ -55,8 +56,12 @@ ActionController::Resources::Resource.class_eval do
     "#{controller.camelize}Controller"
   end  
   
-  private
+  def singleton?
+    is_a?( ActionController::Resources::SingletonResource )
+  end
   
+  private
+    
   def custom_actions_from_ivars
     [@collection_methods, @member_methods, @new_methods].map{|i| i.values }
   end
