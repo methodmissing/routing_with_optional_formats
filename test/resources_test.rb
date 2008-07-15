@@ -27,7 +27,7 @@ class ResourceTest < Test::Unit::TestCase
   end
 
   def test_should_be_able_to_infer_supported_controller_actions
-    assert_equal @resource.controller_actions, [:show, :index]
+    assert_equal @resource.controller_actions, [:show, :index].to_set
   end
     
   def test_should_be_able_to_infer_custom_actions

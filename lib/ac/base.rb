@@ -7,7 +7,7 @@ module ActionController
     class << self
       
       def actions
-        action_methods.map{|a| a.to_sym }
+        action_methods.map{|a| a.to_sym }.to_set
       end
 
     end

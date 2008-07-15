@@ -5,6 +5,9 @@ class BlogsController < ActionController::Base
   def show
   end
   
+  def create
+  end
+  
   def popular
   end
   

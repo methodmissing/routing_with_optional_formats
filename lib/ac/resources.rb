@@ -1,6 +1,8 @@
 ActionController::Resources::Resource.class_eval do
   
   DEFAULT_ACTIONS =  [:index, :new, :create, :show, :edit, :update, :destroy].to_set
+  COLLECTION_ACTIONS = [:index, :create].to_set
+  MEMBER_ACTIONS = [:show, :update, :destroy].to_set  
   
   def controller_klass
     return unless controller_klass?
@@ -25,7 +27,10 @@ ActionController::Resources::Resource.class_eval do
   end
 
   def controller_actions
-    controller_klass.actions
+    returning( controller_klass.actions ) do |ca|
+      ca << :show unless ca.difference( MEMBER_ACTIONS ).empty?
+      ca << :index unless ca.difference( COLLECTION_ACTIONS ).empty?
+    end
   end
         
   def default_actions

@@ -22,6 +22,7 @@ class RoutingWithOptionalFormatsTest < Test::Unit::TestCase
       assert_named_route( "/articles/1/edit", :edit_article_path, { :id => 1 } )
     end
     assert_named_route( "/blogs/popular", :popular_blogs_path )
+    assert_named_route( "/blogs", :blogs_path )
     assert_named_route("/photos/1/vote", :vote_photo_path, { :id => 1 })
     assert_named_route( "/photos", :photos_path )
     assert_named_route( "/photos/1", :photo_path, { :id => 1 } )
