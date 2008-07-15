@@ -50,7 +50,8 @@ ActionController::Resources::Resource.class_eval do
   end
   
   def camelized_controller
-    @camelized_controller ||= "#{path}_controller".camelize
+    @camelized_controller ||= 
+    "#{controller.camelize}Controller"
   end  
   
   private

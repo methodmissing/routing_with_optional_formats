@@ -11,7 +11,7 @@ class ResourceTest < Test::Unit::TestCase
   end 
   
   def test_should_be_able_to_infer_its_camelized_controller
-    assert_equal @resource.camelized_controller, '::ArticlesController'
+    assert_equal @resource.camelized_controller, 'ArticlesController'
   end
   
   def test_sould_be_able_to_infer_its_controller_klass

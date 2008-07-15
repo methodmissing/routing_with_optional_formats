@@ -7,7 +7,11 @@ ActionController::Base.prune_routes = true
 ActionController::Base.optimise_named_routes = true
 ActionController::Base.logger = Logger.new( STDOUT )
 
-%w(articles blogs).each{|c| require "subjects/#{c}_controller"  }
+%w(articles blogs).each{|c| require "subjects/#{c}_controller" }
+
+module Admin
+end
+require 'subjects/admin/blogs_controller'
 
 load( 'routes.rb' )
 
