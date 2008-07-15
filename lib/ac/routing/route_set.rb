@@ -1,11 +1,15 @@
 ActionController::Routing::RouteSet.class_eval do
 
   def add_route(path, options = {})
-    return unless installable?( path, options )
     options.delete(:formatted)
     route = builder.build(path, options)
     @routes << route
     route
+  end
+
+  def connect(path, options = {})
+    return unless installable?( path, options )
+    @set.add_route(path, options)
   end
 
   def add_named_route(name, path, options = {})
