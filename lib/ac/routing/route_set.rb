@@ -15,10 +15,12 @@ ActionController::Routing::RouteSet::Mapper.class_eval do
   private
   
   def controller_only?( options )
+    return false unless ActionController::Base.prune_routes
     options.except(:controller).empty?
   end
 
   def installable?( path, options )
+    return true unless ActionController::Base.prune_routes
     controller_only?(options) || ( path.include?( 'format' ) && options[:formatted] == false ) ? false : true
   end
 
