@@ -27,15 +27,15 @@ ActionController::Resources::Resource.class_eval do
   end
 
   def controller_actions
-    returning( controller_klass.actions ) do |ca|
+    returning( controller_klass.actions.dup ) do |ca|
       ca << :show unless ca.difference( MEMBER_ACTIONS ).empty?
-      ca << :index unless !singleton? && ca.difference( COLLECTION_ACTIONS ).empty?
-      ca.delete(:index) if singleton?
+      ca << :index unless !uncountable? && ca.difference( COLLECTION_ACTIONS ).empty?
+      ca.delete_if{|a| a == :index } if uncountable?
     end
   end
         
   def default_actions
-    (singleton? ? DEFAULT_SINGLETON_ACTIONS : DEFAULT_ACTIONS ).union( custom_actions )
+    (uncountable? ? DEFAULT_SINGLETON_ACTIONS : DEFAULT_ACTIONS ).union( custom_actions )
   end
 
   def custom_actions
