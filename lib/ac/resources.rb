@@ -52,7 +52,7 @@ ActionController::Resources::Resource.class_eval do
   
   def camelized_controller
     @camelized_controller ||= 
-    "#{controller.camelize}Controller"
+    "#{controller.classify}Controller"
   end  
   
   def singleton?

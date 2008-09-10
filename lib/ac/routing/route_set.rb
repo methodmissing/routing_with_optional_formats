@@ -10,7 +10,7 @@ ActionController::Routing::RouteSet.class_eval do
   def connect(path, options = {})
     if installable?( path, options )
       @set.add_route(path, options)
-    end
+    end  
   end
 
   def add_named_route(name, path, options = {})
@@ -23,7 +23,19 @@ ActionController::Routing::RouteSet.class_eval do
   private
   
   def installable?( path, options )
+    if options[:controller] && options[:action]
+      klass = klass_from_options( options )   
+      return false unless klass.actions.include?( options[:action].to_sym )
+    end
     options.except(:controller).empty? || ( path.include?( 'format' ) && options[:formatted] == false ) ? false : true
   end
 
+  def klass_from_options( options )
+    begin
+      "#{options[:controller].camelize}Controller".constantize
+    rescue
+      "#{options[:controller].classify}Controller".constantize
+    end
+  end  
+ 
 end
