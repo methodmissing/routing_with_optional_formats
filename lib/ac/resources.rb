@@ -6,8 +6,7 @@ ActionController::Resources::Resource.class_eval do
   MEMBER_ACTIONS = [:show, :update, :destroy].to_set  
   
   def controller_klass
-    return unless controller_klass?
-    @controller_klass
+    @controller_klass if controller_klass?
   end
   
   def controller_klass?
@@ -77,10 +76,13 @@ ActionController::Resources.module_eval do
   private
     
   def action_options_for_with_formatted( action, resource, method = nil )
-    return {} unless resource.action?( action.to_sym )
-    returning( action_options_for_without_formatted( action, resource, method = nil ) ) do |action_options|
-      action_options.merge!( :formatted => resource.formatted? )
-    end       
+    if resource.action?( action.to_sym )
+      returning( action_options_for_without_formatted( action, resource, method = nil ) ) do |action_options|
+        action_options.merge!( :formatted => resource.formatted? )
+      end
+    else
+      {}
+    end           
   end    
 
   alias_method_chain :action_options_for, :formatted

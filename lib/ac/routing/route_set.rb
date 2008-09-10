@@ -8,14 +8,16 @@ ActionController::Routing::RouteSet.class_eval do
   end
 
   def connect(path, options = {})
-    return unless installable?( path, options )
-    @set.add_route(path, options)
+    if installable?( path, options )
+      @set.add_route(path, options)
+    end
   end
 
   def add_named_route(name, path, options = {})
-    return unless installable?( path, options )
-    name = options[:name_prefix] + name.to_s if options[:name_prefix]
-    @named_routes[name.to_sym] = add_route(path, options)
+    if installable?( path, options )
+      name = options[:name_prefix] + name.to_s if options[:name_prefix]
+      @named_routes[name.to_sym] = add_route(path, options)
+    end
   end
 
   private
