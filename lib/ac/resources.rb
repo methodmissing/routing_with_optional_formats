@@ -10,12 +10,11 @@ ActionController::Resources::Resource.class_eval do
   end
   
   def controller_klass?
-    begin
-      @controller_klass ||= camelized_controller.constantize
-    rescue 
-      ActionController::Base.logger.info " ** #{camelized_controller} not yet defined.Using default routes."
-      false
-    end
+    @controller_klass ||= begin
+        "#{@controller.camelize}Controller".constantize
+      rescue
+        "#{@controller.classify}Controller".constantize
+      end
   end
   
   def formatted?

@@ -23,10 +23,12 @@ ActionController::Routing::RouteSet.class_eval do
   private
   
   def installable?( path, options )
+=begin
     if options[:controller] && options[:action]
       klass = klass_from_options( options )   
       return false unless klass.actions.include?( options[:action].to_sym )
     end
+=end
     options.except(:controller).empty? || ( path.include?( 'format' ) && options[:formatted] == false ) ? false : true
   end
 
